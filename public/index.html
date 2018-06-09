@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script>
+    <title>Home</title>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        var socket = io();
+        
+        socket.on('resMsg',function(data){
+            console.log(data)
+            $('#chatText').append(data+"<br>");
+        })
+
+
+      
+        $("#form").submit(function(data){
+            var msg=document.forms.form;
+            msg=new FormData(form);
+
+        
+            dic={name:msg.get('name'),
+                location:msg.get('dojLoc'),
+                language:msg.get('favLang'),
+                comment:msg.get('comment')        
+            }
+        
+
+            socket.emit('messege',dic);
+           
+            $('input').val("");
+            $("select").val("");
+            
+            return false;
+
+        })
+
+    
+
+    })
+    
+    </script>
+</head>
+<body>
+    <h1>Welcome to My first chat website</h1>
+    <h2>Form:</h2>
+    <div id="chat"  
+    style="outline: solid 2px black ; width: 400px ;
+    height:200px; overflow-y: scroll; padding-left: 10px ;" >
+        <h3 id="chatText"></h3>
+            
+            
+    </div>
+    <br>
+    
+
+
+    <form id="form"  action="" >
+            Name: <input type="text" name="name" ><br>
+            Dojo Location: <select name="dojLoc" >
+                <option value=""></option>
+                <option value="chicago">Chicago</option>
+                <option value="boston">Boston</option>
+                <option value="baghdad">Baghdad</option>
+                <option value="california">California</option>
+              </select><br><br>
+            Favorite Language:<select name="favLang">
+                    <option value=""></option>
+    
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+                <option value="c++">C++</option>
+                
+              </select><br> 
+              
+            Comment (optional): <br> <input type="text" name="comment" style="height: 50px;" ><br>
+            <button>Submit</button>
+    </form>
+   <br>
+
+
+    
+</body>
+</html>
